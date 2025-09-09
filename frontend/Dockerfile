@@ -30,13 +30,15 @@ ENV NEXT_TELEMETRY_DISABLED=1
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-# Create necessary directories
-RUN mkdir -p .next/standalone .next/static
+# Copy package.json and install production dependencies
+COPY --from=builder /app/package.json ./
+COPY --from=builder /app/package-lock.json* ./
+RUN npm ci --only=production && npm cache clean --force
 
-# Copy necessary files from builder with proper permissions
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+# Copy built application
+COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/next.config.ts ./
 
 # Set proper permissions
 RUN chown -R nextjs:nodejs /app
@@ -51,4 +53,4 @@ EXPOSE 3000
 ENV HOSTNAME=0.0.0.0
 
 # Start the application
-CMD ["node", "server.js"]
+CMD ["npm", "start"]
