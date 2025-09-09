@@ -1,13 +1,9 @@
-
+version: "3.8"
 
 services:
   # Backend Service
   backend:
-    build:
-      context: ./backend
-      target: production
-      args:
-        - NODE_ENV=production
+    image: ${DOCKERHUB_USERNAME}/prompthub-backend:latest
     container_name: prompthub-backend
     restart: always
     env_file:
@@ -15,7 +11,13 @@ services:
     ports:
       - "4000:4000"
     healthcheck:
-      test: ["CMD", "node", "-e", "require('http').request('http://localhost:4000/.well-known/apollo/server-health', console.log).end()"]
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "require('http').request('http://localhost:4000/.well-known/apollo/server-health', console.log).end()",
+        ]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -27,11 +29,7 @@ services:
 
   # Frontend Service
   frontend:
-    build:
-      context: ./frontend
-      target: production
-      args:
-        - NODE_ENV=production
+    image: ${DOCKERHUB_USERNAME}/prompthub-frontend:latest
     container_name: prompthub-frontend
     restart: always
     env_file:

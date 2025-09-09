@@ -20,7 +20,8 @@ ENV NODE_ENV=production
 RUN npm run build
 
 # Production stage
-FROM node:20-slim AS runner
+FROM node:20-slim AS production
+
 
 WORKDIR /app
 
