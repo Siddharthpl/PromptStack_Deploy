@@ -60,6 +60,7 @@ touch frontend/.env.production
 echo -e "${YELLOW}🚀 Starting services...${NC}"
 DOCKERHUB_USERNAME=$DOCKERHUB_USERNAME docker-compose -f $COMPOSE_FILE up -d
 
+
 # Clean up unused images
 echo -e "${YELLOW}🧹 Cleaning up unused images...${NC}"
 docker image prune -f
