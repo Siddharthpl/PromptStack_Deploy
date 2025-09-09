@@ -61,9 +61,14 @@ echo -e "${YELLOW}🚀 Starting services...${NC}"
 DOCKERHUB_USERNAME=$DOCKERHUB_USERNAME docker-compose -f $COMPOSE_FILE up -d
 
 
-# Clean up unused images
-echo -e "${YELLOW}🧹 Cleaning up unused images...${NC}"
-docker image prune -f
+# Clean up unused images, containers, volumes, networks
+echo -e "${YELLOW}🧹 Cleaning up unused Docker resources...${NC}"
+docker system prune -af --volumes
+
+# Truncate Docker logs to avoid filling disk
+echo -e "${YELLOW}🗑️ Clearing old Docker logs...${NC}"
+find /var/lib/docker/containers/ -name "*-json.log" -exec truncate -s 0 {} \; || true
+
 
 # Show running containers
 echo -e "${GREEN}✅ Deployment completed!${NC}"
