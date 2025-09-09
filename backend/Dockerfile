@@ -11,7 +11,9 @@ RUN apt-get update && \
 
 # Install dependencies
 COPY package.json package-lock.json* ./
-RUN npm ci --only=production
+# Install TypeScript globally and dev dependencies for building
+RUN npm install -g typescript && \
+    npm ci
 
 # Copy source code
 COPY . .
