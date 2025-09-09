@@ -10,8 +10,12 @@ RUN npm ci
 # Copy the rest of the app
 COPY . .
 
-# Build the Next.js app
-ENV NEXT_TELEMETRY_DISABLED 1
+# Build the Next.js app with standalone output
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV NODE_ENV=production
+
+# Install build dependencies and build the application
+RUN npm install
 RUN npm run build
 
 # Production stage
@@ -25,10 +29,21 @@ ENV NEXT_TELEMETRY_DISABLED 1
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-# Copy necessary files from builder
+# Create necessary directories
+RUN mkdir -p .next/static
+
+# Copy necessary files from builder with proper permissions
+COPY --from=builder /app/next.config.ts ./
+COPY --from=builder /app/next-env.d.ts ./
 COPY --from=builder /app/public ./public
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
+
+# Ensure the server.js is executable
+RUN chmod +x server.js
+
+# Set proper permissions
+RUN chown -R nextjs:nodejs /app
 
 # Set the user
 USER nextjs
