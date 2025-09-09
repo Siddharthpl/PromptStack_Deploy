@@ -25,11 +25,8 @@ const nextConfig: NextConfig = {
     // Important: return the modified config
     return config;
   },
-  // Add experimental features if needed
-  experimental: {
-    // Enable server components
-    serverComponentsExternalPackages: ['@prisma/client'],
-  },
+  // External packages for server components
+  serverExternalPackages: ['@prisma/client'],
 };
 
 export default nextConfig;
