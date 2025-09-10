@@ -9,7 +9,8 @@ import { setContext } from "@apollo/client/link/context";
 
 function makeClient() {
   const graphqlEndpoint =
-    process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT || "http://13.202.151.13:4000/graphql";
+    process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT ||
+    "http://13.202.151.13:4000/graphql";
 
   // 👇 Add a console.log here
   console.log("🚀 GraphQL Endpoint:", graphqlEndpoint);
