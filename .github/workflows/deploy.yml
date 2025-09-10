@@ -92,8 +92,16 @@ jobs:
 
             # Copy necessary files
             echo "Copying configuration files..."
-            echo "${{ secrets.BACKEND_ENV }}" > ~/prompthub/backend/.env.production
-            echo "${{ secrets.FRONTEND_ENV }}" > ~/prompthub/frontend/.env.production
+            # Backend .env.production
+            cat << 'EOF' > ~/prompthub/backend/.env.production
+            ${{ secrets.BACKEND_ENV }}
+            EOF
+
+            # Frontend .env.production
+            cat << 'EOF' > ~/prompthub/frontend/.env.production
+            ${{ secrets.FRONTEND_ENV }}
+            EOF
+
 
             # Start the services
             docker-compose -f docker-compose.prod.yml up -d
