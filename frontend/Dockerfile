@@ -17,13 +17,12 @@
     COPY components.json ./
     COPY eslint.config.mjs ./
 
-    # Copy source code
-    COPY app ./app
-    COPY components ./components
-    COPY lib ./lib
-    COPY hooks ./hooks
-    COPY middleware.ts ./
-    COPY next-env.d.ts ./
+# Copy source code
+COPY app ./app
+COPY components ./components
+COPY lib ./lib
+COPY hooks ./hooks
+COPY middleware.ts ./
 
     # Copy public assets
     COPY public ./public
