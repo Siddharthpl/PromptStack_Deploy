@@ -39,7 +39,7 @@ services:
     depends_on:
       - backend
     healthcheck:
-      test: ["CMD", "wget", "--spider", "http://localhost:3000"]
+      test: ["CMD", "node", "-e", "require('http').request('http://localhost:3000', console.log).end()"]
       interval: 30s
       timeout: 10s
       retries: 3
